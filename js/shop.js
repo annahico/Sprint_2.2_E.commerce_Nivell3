@@ -109,6 +109,7 @@ function cleanCart () {
     printCart();  
     console.log('Cart has been cleaned');
 }
+
 // Exercise 3
 function calculateTotal ()  {
     // Calculate total price of the cart using the "cartList" array
@@ -129,14 +130,24 @@ function calculateTotal ()  {
     return total;
 }
    
-function printCart() {
-    console.log('Carrito actual:', cart);
-}
-
 // Exercise 4
 const applyPromotionsCart = () =>  {
     // Apply promotions to each item in the array "cart"
-}
+  cart.forEach(item => {
+    item.subtotal = item.price * item.quantity
+    if (item.id === 1 && item.quantity >= 3) {
+        item.subtotalWithDiscount = item.subtotal * (1 - 0.20);
+    }
+    else if (item.id === 3 && item.quantity >= 10) {
+        item.subtotalWithDiscount = item.subtotal * (1 - 0.30);
+    }
+    else {
+        item.subtotalWithDiscount = item.subtotal;
+    }
+});
+
+calculatedTotal();
+};
 
 // Exercise 5
 const printCart = () => {
