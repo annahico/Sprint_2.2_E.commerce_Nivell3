@@ -75,10 +75,23 @@ const cart = [];
 const total = 0;
 
 // Exercise 1
-const buy = (id) => {
+function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cart array
-}
+     // 2. Add found product to the cart array
+    const product = products.find(product => product.id === id);
+    if (!product) {
+        return console.error('Product not found');
+    }
+
+    const itemInCart = cart.find(item => item.id === id);
+    if (itemInCart) {
+        itemInCart.quantity += 1;
+    }else {
+        cart.push({
+            ...product,
+            quantity: 1
+        });
+    }
 
 // Exercise 2
 const cleanCart = () =>  {
@@ -110,4 +123,5 @@ const removeFromCart = (id) => {
 
 const open_modal = () =>  {
     printCart();
+}
 }
