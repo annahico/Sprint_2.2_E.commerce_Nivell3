@@ -71,8 +71,7 @@ const products = [
 
 // Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
 const cart = [];
-
-const total = 0;
+let total = 0;
 
 // Exercise 1
 function buy(id) {
@@ -83,9 +82,9 @@ function buy(id) {
         return console.error('Product not found');
     }
 
-    const itemInCart = cart.find(item => item.id === id);
-    if (itemInCart) {
-        itemInCart.quantity += 1;
+    const productInCart = cart.find(item => item.id === id);
+    if (productInCart) {
+        productInCart.quantity += 1;
     }else {
         cart.push({
             ...product,
@@ -93,14 +92,45 @@ function buy(id) {
         });
     }
 
-// Exercise 2
-const cleanCart = () =>  {
-
+    calculateTotal();
+    printCart()
 }
 
+// Exercise 2
+function cleanCart () {
+    cart.length = 0;
+    total = 0;
+
+    let totalPriceElement = document.getElementById('total-price');
+    if (totalPriceElement) {
+        totalPriceElement.textContent = '0';
+    }
+
+    printCart();  
+    console.log('Cart has been cleaned');
+}
 // Exercise 3
-const calculateTotal = () =>  {
+function calculateTotal ()  {
     // Calculate total price of the cart using the "cartList" array
+    let calculatedTotal = 0; 
+
+    for (let i = 0; i < cart.length; i++) {
+        const item = cart[i];
+        calculatedTotal += item.price * item.quantity;         
+    }
+
+    total = calculatedTotal;
+
+    const totalPriceElement = document.getElementById('total-price');
+    if (totalPriceElement) {
+        totalPriceElement.textContent = total.toFixed(2);
+    }
+
+    return total;
+}
+   
+function printCart() {
+    console.log('Carrito actual:', cart);
 }
 
 // Exercise 4
@@ -123,5 +153,4 @@ const removeFromCart = (id) => {
 
 const open_modal = () =>  {
     printCart();
-}
 }
