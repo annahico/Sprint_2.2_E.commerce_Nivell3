@@ -146,23 +146,27 @@ calculateTotal();
 // Exercise 5
 function printCart()  {
     // Fill the shopping cart modal manipulating the shopping cart dom
-const cartListElement = document.getElementById('cart-list');
+const cartListElement = document.getElementById('cart_list');
     if (!cartListElement) return console.error('Cart list element not found');
 
     cartListElement.innerHTML = '';
     if (cart.length === 0) {
-        cartListElement.innerHTML = '<p>Your cart is empty</p>';
+        cartListElement.innerHTML = '<tr><td colspan="4">Your cart is empty</td></tr>';
     } else {
         cart.forEach(item => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${item.name} - $${item.price.toFixed(2)} x ${item.quantity} = $${(item.subtotalWithDiscount || item.price * item.quantity).toFixed(2)}`;
-            cartListElement.appendChild(listItem);
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <th scope="row">${item.name}</th>
+                <td>$${item.price.toFixed(2)}</td>
+                <td>${item.quantity}</td>
+                <td>$${(item.subtotalWithDiscount || item.price * item.quantity).toFixed(2)}</td>
+            `;
+            cartListElement.appendChild(row);
         });
     }
     updateTotalInDOM();
+    CartCount();
 }
-
-
 
 // ** Nivell II **
 
@@ -184,6 +188,40 @@ function removeFromCart(id) {
         }
     }
 
-const open_modal = () =>  {
+function open_modal() {
     printCart();
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+        cartModal.show();
+    } else {
+        console.error('Bootstrap no està carregat correctament');
+    }
 }
+
+// function updateTotalInDOM() {
+//     const totalPriceElement = document.getElementById('total_price');
+//     if (totalPriceElement) {
+//         totalPriceElement.textContent = total.toFixed(2);
+//     }
+// }
+
+// function CartCount() {
+//     const countElement = document.getElementById('count_product');
+//     if (countElement) {
+//         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+//         countElement.textContent = totalItems;
+//     }
+// }
+
+
+// function setupEventListeners() {
+//     document.querySelectorAll('.add-to-cart').forEach(button => {
+//         button.addEventListener('click', (e) => {
+//             const productId = parseInt(e.target.closest('button').dataset.productId);
+//             buy(productId);
+//         });
+//     });
+
+//     document.getElementById('clean-cart')?.addEventListener('click', cleanCart);
+// }
+

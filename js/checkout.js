@@ -21,7 +21,7 @@ const validate = () => {
 	// Validate fields entered by the user: name, phone, password, and email
 
 	//NAME
-	 if (fName.value.trim().length < 3 || !/^[a-zA-Z]+$/.test(fName.value)) { // ^inici de cadena, $final de cadena, [a-zA-Z] només lletres
+	 if (fName.value.trim().length < 3 || !/^[a-zA-ZçÇ]+$/.test(fName.value)) { // ^inici de cadena, $final de cadena, [a-zA-Z] només lletres
         fName.classList.add("is-invalid");
         errorName.textContent =
             "Name must be at least 3 letters and contain only letters.";
@@ -32,7 +32,7 @@ const validate = () => {
     }
 
 	//LAST NAME
-	 if (fLastN.value.trim().length < 3 || !/^[a-zA-Z]+$/.test(fLastN.value)) { 
+	 if (fLastN.value.trim().length < 3 || !/^[a-zA-ZçÇ]+$/.test(fLastN.value)) { 
         fLastN.classList.add("is-invalid");
         errorLastN.textContent =
             "Last name must be at least 3 letters and contain only letters.";
