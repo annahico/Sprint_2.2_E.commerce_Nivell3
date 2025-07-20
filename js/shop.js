@@ -92,6 +92,7 @@ function buy(id) {
         });
     }
 
+    applyPromotionsCart();
     calculateTotal();
     printCart()
 }
@@ -113,20 +114,13 @@ function cleanCart () {
 // Exercise 3
 function calculateTotal ()  {
     // Calculate total price of the cart using the "cartList" array
-    let calculatedTotal = 0; 
+    let calculateTotal = 0; 
 
-    for (let i = 0; i < cart.length; i++) {
-        const item = cart[i];
-        calculatedTotal += item.price * item.quantity;         
-    }
-
-    total = calculatedTotal;
-
-    const totalPriceElement = document.getElementById('total-price');
-    if (totalPriceElement) {
-        totalPriceElement.textContent = total.toFixed(2);
-    }
-
+    cart.forEach(item => {
+        calculateTotal += (item.subtotalWithDiscount || item.price * item.quantity);
+    });
+    total = calculateTotal;
+    updateTotalInDOM();
     return total;
 }
    
@@ -136,53 +130,38 @@ const applyPromotionsCart = () =>  {
   cart.forEach(item => {
     item.subtotal = item.price * item.quantity
     if (item.id === 1 && item.quantity >= 3) {
-        item.subtotalWithDiscount = item.subtotal * (1 - 0.20);
+        item.subtotalWithDiscount = item.subtotal * 0.8; // 20% descompte
     }
     else if (item.id === 3 && item.quantity >= 10) {
-        item.subtotalWithDiscount = item.subtotal * (1 - 0.30);
+        item.subtotalWithDiscount = item.subtotal * 0.7; // 30% descompte
     }
     else {
         item.subtotalWithDiscount = item.subtotal;
     }
 });
 
-calculatedTotal();
+calculateTotal();
 };
 
 // Exercise 5
 function printCart()  {
     // Fill the shopping cart modal manipulating the shopping cart dom
-    const cartListElement = document.getElementById('cart-list');
+const cartListElement = document.getElementById('cart-list');
+    if (!cartListElement) return console.error('Cart list element not found');
 
-    if (!cartListElement) {
-        console.error('Cart list element not found');
-        return;
-    }
-    cartListElement.innerHTML = ''; 
+    cartListElement.innerHTML = '';
     if (cart.length === 0) {
         cartListElement.innerHTML = '<p>Your cart is empty</p>';
-        return;
+    } else {
+        cart.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${item.name} - $${item.price.toFixed(2)} x ${item.quantity} = $${(item.subtotalWithDiscount || item.price * item.quantity).toFixed(2)}`;
+            cartListElement.appendChild(listItem);
+        });
     }
-    cart.forEach(item => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${item.name} - $${item.price.toFixed(2)} x ${item.quantity} = $${(item.subtotalWithDiscount || item.subtotal).toFixed(2)}`;
-        cartListElement.appendChild(listItem);
-    });
-    const totalPriceElement = document.getElementById('total-price');
-
-    if (totalPriceElement) {
-        totalPriceElement.textContent = total.toFixed(2);
-    }
-    else {
-        console.error('Total price element not found');
-    }
-    applyPromotionsCart();
-    console.log('Cart printed');
-    open_modal();
-    console.log('Cart opened');
-    
-
+    updateTotalInDOM();
 }
+
 
 
 // ** Nivell II **
@@ -195,10 +174,11 @@ function removeFromCart(id) {
         if (cart[i].quantity > 1) {
             cart[i].quantity -= 1;
         } else {
-            cart.splice(index, 1); // elimina el producte si la quantitat és 1
+            cart.splice(i, 1); // elimina el producte si la quantitat és 1
         }
 
         applyPromotionsCart();
+        calculateTotal();
         printCart();
         CartCount();
         }
