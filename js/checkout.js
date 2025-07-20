@@ -1,6 +1,9 @@
 
 // Exercise 6
-const validate = () => {
+document.getElementById("myForm").addEventListener("submit", validate);
+
+function validate(event) {
+    event.preventDefault();
 	let error = 0;
 	// Get the input fields
 	const fName = document.getElementById("fName");
@@ -68,7 +71,7 @@ const validate = () => {
 	//PASSWORD
 if (fPassword.value.trim().length < 6 || !/(?=.*[a-zA-ZçÇ])(?=.*[0-9])/.test(fPassword.value)) { // Comprova que tingui mínim 6 caràcters, lletres (incloent lletres catalanes) i números
     fPassword.classList.add("is-invalid");
-    errorPassword.textContent = "La contrasenya ha de tenir mínim 6 caràcters, incloure lletres (poden ser amb ç/Ç) i números.";
+    errorPassword.textContent = "The password must have at least 6 characters, include letters and numbers.";
     error++;
 } else {
     fPassword.classList.remove("is-invalid");
