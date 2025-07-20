@@ -32,7 +32,7 @@ const validate = () => {
     }
 
 	//LAST NAME
-	 if (fLastN.value.trim().length < 3 || !/^[a-zA-Z]+$/.test(fLastN.value)) { // ^inici de cadena, $final de cadena, [a-zA-Z] només lletres
+	 if (fLastN.value.trim().length < 3 || !/^[a-zA-Z]+$/.test(fLastN.value)) { 
         fLastN.classList.add("is-invalid");
         errorLastN.textContent =
             "Last name must be at least 3 letters and contain only letters.";
@@ -66,17 +66,17 @@ const validate = () => {
     }
 
 	//PASSWORD
-	    if (fPassword.value.trim().length < 6) {
-		fPassword.classList.add("is-invalid");
-		errorPassword.textContent = "Password must be at least 6 characters.";
-		error++;
-	} else {
-		fPassword.classList.remove("is-invalid");
-		errorPassword.textContent = "";
-	}
+if (fPassword.value.trim().length < 6 || !/(?=.*[a-zA-ZçÇ])(?=.*[0-9])/.test(fPassword.value)) { // Comprova que tingui mínim 6 caràcters, lletres (incloent lletres catalanes) i números
+    fPassword.classList.add("is-invalid");
+    errorPassword.textContent = "La contrasenya ha de tenir mínim 6 caràcters, incloure lletres (poden ser amb ç/Ç) i números.";
+    error++;
+} else {
+    fPassword.classList.remove("is-invalid");
+    errorPassword.textContent = "";
+}
 
 	//PHONE
-	 if (!/^\d{9}$/.test(fPhone.value)) {
+	 if (!/^\d{9}$/.test(fPhone.value)) { // Comprova que el telèfon tingui exactament 9 dígits
         fPhone.classList.add("is-invalid");
         errorPhone.textContent = "Phone must be exactly 9 digits.";
         error++;
