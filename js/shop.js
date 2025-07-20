@@ -72,156 +72,114 @@ const products = [
 // Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
 const cart = [];
 let total = 0;
+let counter = 0;
+;
 
 // Exercise 1
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cart array
-    const product = products.find(product => product.id === id);
-    if (!product) {
-        return console.error('Product not found');
-    }
+    let product = products.find((p) => p.id === id);
 
-    const productInCart = cart.find(item => item.id === id);
+    let productInCart = cart.find((p) => p.id === id);
+
     if (productInCart) {
         productInCart.quantity += 1;
-    }else {
-        cart.push({
-            ...product,
-            quantity: 1
-        });
+        counter++;
+    } else {
+        cart.push(product);
+        counter++;
     }
 
-    applyPromotionsCart();
-    calculateTotal();
-    printCart()
+    buttonCounter.innerText = counter;
 }
 
 // Exercise 2
-function cleanCart () {
-    cart.length = 0;
-    total = 0;
-
-    let totalPriceElement = document.getElementById('total-price');
-    if (totalPriceElement) {
-        totalPriceElement.textContent = '0';
-    }
-
-    printCart();  
-    console.log('Cart has been cleaned');
+function cleanCart() {
+    cart = [];
+    cartList.innerHTML = "";
+    totalPrice.innerText = 0;
+    counter = 0;
+    buttonCounter.innerText = counter;
 }
 
 // Exercise 3
-function calculateTotal ()  {
+function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
-    let calculateTotal = 0; 
-
-    cart.forEach(item => {
-        calculateTotal += (item.subtotalWithDiscount || item.price * item.quantity);
-    });
-    total = calculateTotal;
-    updateTotalInDOM();
+    total = 0;
+    cart.forEach((p) => (total += p.price * p.quantity));
     return total;
 }
-   
-// Exercise 4
-const applyPromotionsCart = () =>  {
-    // Apply promotions to each item in the array "cart"
-  cart.forEach(item => {
-    item.subtotal = item.price * item.quantity
-    if (item.id === 1 && item.quantity >= 3) {
-        item.subtotalWithDiscount = item.subtotal * 0.8; // 20% descompte
-    }
-    else if (item.id === 3 && item.quantity >= 10) {
-        item.subtotalWithDiscount = item.subtotal * 0.7; // 30% descompte
-    }
-    else {
-        item.subtotalWithDiscount = item.subtotal;
-    }
-});
 
-calculateTotal();
-};
+// Exercise 4
+function applyPromotionsCart(cart) {
+    // Apply promotions to each item in the array "cart"
+    let totalWithDiscount = 0;
+    cart.forEach((p) => {
+        if (p.offer && p.quantity >= p.offer.number) {
+            p.subtotalWithDiscount =
+                p.quantity * p.price * (1 - p.offer.percent / 100);
+        } else {
+            p.subtotalWithDiscount = p.quantity * p.price;
+        }
+        totalWithDiscount += p.subtotalWithDiscount;
+    });
+
+    return totalWithDiscount;
+}
 
 // Exercise 5
-function printCart()  {
+function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
-const cartListElement = document.getElementById('cart_list');
-    if (!cartListElement) return console.error('Cart list element not found');
+    cartList.innerHTML = "";
+    totalPrice.innerText = "";
 
-    cartListElement.innerHTML = '';
-    if (cart.length === 0) {
-        cartListElement.innerHTML = '<tr><td colspan="4">Your cart is empty</td></tr>';
-    } else {
-        cart.forEach(item => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <th scope="row">${item.name}</th>
-                <td>$${item.price.toFixed(2)}</td>
-                <td>${item.quantity}</td>
-                <td>$${(item.subtotalWithDiscount || item.price * item.quantity).toFixed(2)}</td>
-            `;
-            cartListElement.appendChild(row);
-        });
-    }
-    updateTotalInDOM();
-    CartCount();
+    const totalWithDiscount = applyPromotionsCart(cart);
+
+    cart.forEach((p) => {
+        const tr = document.createElement("tr");
+        const th = document.createElement("th");
+        const td1 = document.createElement("td");
+        const td2 = document.createElement("td");
+        const td3 = document.createElement("td");
+
+        th.setAttribute("scope", "row");
+        th.innerText = p.name;
+        td1.innerText = p.price;
+        td2.innerText = p.qty;
+        td3.innerText = p.subtotalWithDiscount.toFixed(2);
+
+        tr.append(th, td1, td2, td3);
+
+        cartList.append(tr);
+    });
+
+    totalPrice.innerText = totalWithDiscount.toFixed(2);
 }
 
 // ** Nivell II **
 
 // Exercise 7
 function removeFromCart(id) {
-    const i = cart.findIndex(product => product.id === id);
+    const index = cart.findIndex((p) => p.id === id);
 
-    if (i !== -1) {
-        if (cart[i].quantity > 1) {
-            cart[i].quantity -= 1;
+    if (index !== -1) {
+        if (cart[index].qty > 1) {
+            cart[index].qty -= 1;
         } else {
-            cart.splice(i, 1); // elimina el producte si la quantitat és 1
-        }
-
-        applyPromotionsCart();
-        calculateTotal();
-        printCart();
-        CartCount();
+            cart.splice(index, 1);
         }
     }
+
+    counter = 0;
+    cart.forEach((p) => {
+        counter += p.qty;
+    });
+
+    printCart();
+    buttonCounter.innerText = counter;
+}
 
 function open_modal() {
     printCart();
-    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-        cartModal.show();
-    } else {
-        console.error('Bootstrap no està carregat correctament');
-    }
 }
-
-// function updateTotalInDOM() {
-//     const totalPriceElement = document.getElementById('total_price');
-//     if (totalPriceElement) {
-//         totalPriceElement.textContent = total.toFixed(2);
-//     }
-// }
-
-// function CartCount() {
-//     const countElement = document.getElementById('count_product');
-//     if (countElement) {
-//         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-//         countElement.textContent = totalItems;
-//     }
-// }
-
-
-// function setupEventListeners() {
-//     document.querySelectorAll('.add-to-cart').forEach(button => {
-//         button.addEventListener('click', (e) => {
-//             const productId = parseInt(e.target.closest('button').dataset.productId);
-//             buy(productId);
-//         });
-//     });
-
-//     document.getElementById('clean-cart')?.addEventListener('click', cleanCart);
-// }
-
