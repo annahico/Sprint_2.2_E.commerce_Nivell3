@@ -150,8 +150,38 @@ calculatedTotal();
 };
 
 // Exercise 5
-const printCart = () => {
+function printCart()  {
     // Fill the shopping cart modal manipulating the shopping cart dom
+    const cartListElement = document.getElementById('cart-list');
+
+    if (!cartListElement) {
+        console.error('Cart list element not found');
+        return;
+    }
+    cartListElement.innerHTML = ''; 
+    if (cart.length === 0) {
+        cartListElement.innerHTML = '<p>Your cart is empty</p>';
+        return;
+    }
+    cart.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${item.name} - $${item.price.toFixed(2)} x ${item.quantity} = $${(item.subtotalWithDiscount || item.subtotal).toFixed(2)}`;
+        cartListElement.appendChild(listItem);
+    });
+    const totalPriceElement = document.getElementById('total-price');
+
+    if (totalPriceElement) {
+        totalPriceElement.textContent = total.toFixed(2);
+    }
+    else {
+        console.error('Total price element not found');
+    }
+    applyPromotionsCart();
+    console.log('Cart printed');
+    open_modal();
+    console.log('Cart opened');
+    
+
 }
 
 
