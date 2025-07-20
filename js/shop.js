@@ -76,7 +76,7 @@ let total = 0;
 // Exercise 1
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
-     // 2. Add found product to the cart array
+    // 2. Add found product to the cart array
     const product = products.find(product => product.id === id);
     if (!product) {
         return console.error('Product not found');
@@ -188,9 +188,21 @@ function printCart()  {
 // ** Nivell II **
 
 // Exercise 7
-const removeFromCart = (id) => {
+function removeFromCart(id) {
+    const i = cart.findIndex(product => product.id === id);
 
-}
+    if (i !== -1) {
+        if (cart[i].quantity > 1) {
+            cart[i].quantity -= 1;
+        } else {
+            cart.splice(index, 1); // elimina el producte si la quantitat és 1
+        }
+
+        applyPromotionsCart();
+        printCart();
+        CartCount();
+        }
+    }
 
 const open_modal = () =>  {
     printCart();
