@@ -92,6 +92,83 @@ footer {
   color: #9c2e7d;
 }
 
+#cartModal .modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 8px 30px rgba(190, 46, 125, 0.55);
+    font-family: "arial", sans-serif;
+}
+
+#cartModal .modal-header {
+    background-color: white;
+    border-bottom: 1px solid white;
+    padding: 1rem 1.5rem;
+}
+
+#cartModal .modal-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#cartModal .modal-body {
+    padding: 2rem 1.5rem;
+}
+
+#cartModal .modal-body h3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#cartModal table {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+#cartModal th,
+#cartModal td {
+    text-align: center;
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+#cartModal thead {
+    background-color: white;
+    font-weight: bold;
+}
+
+#cartModal tbody tr:not(:last-child) {
+    border-bottom: 1px solid white;
+}
+
+#cartModal .fs-3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+#cartModal .btn-primary {
+    background-color: #df44b3;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.8rem;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 0.375rem;
+    margin: 0 0.5rem;
+    transition: background-color 0.3s;
+}
+
+#cartModal .btn-primary:hover {
+    background-color: #5f124d;
+}
+
 /* MEDIA QUERIES */
 @media (max-width: 768px) {
   header h1 {
