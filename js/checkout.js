@@ -1,7 +1,5 @@
 
 // Exercise 6
-document.getElementById("myForm").addEventListener("submit", validate);
-
 function validate(event) {
     event.preventDefault();
 	let error = 0;
@@ -21,7 +19,7 @@ function validate(event) {
 	const errorPassword = document.getElementById("errorPassword");
   	const errorPhone = document.getElementById("errorPhone");
 	
-	// Validate fields entered by the user: name, phone, password, and email
+	// Validate fields entered by the user: name, phone, password, and email:
 
 	//NAME
 	 if (fName.value.trim().length < 3 || !/^[a-zA-ZçÇ]+$/.test(fName.value)) { // ^inici de cadena, $final de cadena, [a-zA-Z] només lletres
