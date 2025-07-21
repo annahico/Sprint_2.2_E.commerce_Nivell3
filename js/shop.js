@@ -28,7 +28,6 @@ function buy(id) {
         console.error(`Producte amb ID ${id} no trobat!`);
         return;
     }
-
     console.log('Producte trobat:', product);
     
     let productInCart = cart.find((p) => p.id === id);
@@ -43,7 +42,6 @@ function buy(id) {
         counter++;
         console.log(`Afegint nou producte ${id} al carret. Quantitat inicial: 1`);
     }
-
     buttonCounter.innerText = counter;
     console.log('Carret actual:', cart);
     console.log('Comptador total:', counter);
@@ -100,7 +98,7 @@ function printCart() {
 
     if (cart.length === 0) {
         console.log('El carret està buit');
-        cartList.innerHTML = '<tr><td colspan="4">El carret està buit</td></tr>';
+        cartList.innerHTML = '<tr><td colspan="4">Cart is empty.</td></tr>';
     } else {
         cart.forEach((p) => {
             const tr = document.createElement("tr");
