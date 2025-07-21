@@ -6,8 +6,8 @@
 }
 
 #cartModal .modal-header {
-    background-color: #f5f1f4;
-    border-bottom: 1px solid #e6dee3;
+    background-color: white;
+    border-bottom: 1px solid white;
     padding: 1rem 1.5rem;
 }
 
@@ -45,12 +45,12 @@
 }
 
 #cartModal thead {
-    background-color: #faf8f9;
+    background-color: white;
     font-weight: bold;
 }
 
 #cartModal tbody tr:not(:last-child) {
-    border-bottom: 1px solid #e6dee4;
+    border-bottom: 1px solid white;
 }
 
 #cartModal .fs-3 {
@@ -61,7 +61,7 @@
 
 #cartModal .btn-primary {
     background-color: #df44b3;
-    color: #ffffff;
+    color: white;
     border: none;
     padding: 0.6rem 1.8rem;
     font-weight: 500;
